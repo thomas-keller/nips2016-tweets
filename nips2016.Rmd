@@ -12,9 +12,11 @@ knitr::opts_chunk$set(echo = TRUE, warning = F, error = F, message = F)
 
 # What's hoppin at NIPS2016?
 
-I would best self-describe as amateur-hour when it comes to things neural networks-y, so it's fun to read along about the cutting edge and see what is the next new thing. I didn't physically attend NIPS, and it's certainly not my primary field (I'm coming from my interest as an interest as a computational biologist). I'm not really going to try to pass judgement on any trends, mostly this analysis is to try to figure out  some new accounts to follow. With that caveat in mind, there are some I think popular tweets that somewhat set the tone hindsight.
+Preamble: The R code is [at this github repo](https://github.com/thomas-keller/nips2016-tweets)
 
-One tweet I particularly liked:
+I would best self-describe as amateur-hour when it comes to things neural networks-y, so it's fun to read along about the cutting edge and see what is the next new thing. I didn't physically attend NIPS, and it's certainly not my primary field (I'm coming from my interest as an interest as a computational biologist). I'm not really going to try to pass judgement on any trends, mostly this analysis is to try to figure out  some new accounts to follow. With that caveat in mind, there are some I think popular tweets that somewhat set the tone in hindsight.
+
+One tweet I particularly liked, from the maker of Keras (really super useful if you dink around with Tensorflow or Theano, like at all):
 
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">At a cafe in Barcelona airport -- customers around me are chatting about batch normalization in variational autoencoders. The end of NIPS.</p>&mdash; François Chollet (@fchollet) <a href="https://twitter.com/fchollet/status/807860000647430144">December 11, 2016</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
