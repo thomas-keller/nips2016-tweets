@@ -197,7 +197,7 @@ tweeter_summary %>% slice(1:40) %>%
   theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-Here, if we try to quantify the "impact" or "influence" (~virality~) per tweet, we can also see another way of identifyng important people in the conference network. I'm dubious about these dubious but here we are anyway.
+Here, if we try to quantify the "impact" or "influence" (~virality~) per tweet, we can also see another way of identifyng important people in the conference network. I'm dubious about these but here we are anyway.
 
 ```{r}
 library(viridis)
@@ -350,6 +350,8 @@ You notice that even with the pruned retweet network, that network is denser tha
 
 BostonDynamics were much talked about once their robot came out of nowhere.
 
+One "problem" with this network is that there are way too many clusters being found by the cluster walktrap algorithm -- perhaps another would be better? It's finding like 200 clusters.
+
 ```{r mentions}
 mentions = regmatches(orig_tweets$text,
                        gregexpr("@[-_A-Za-z0-9]+",
@@ -408,7 +410,7 @@ cw <- cluster_walktrap(mention_graph)
 cw
 V(mention_graph)$group = membership(cw)
 
-#IDK basically anything about this package yet, so again straight from Kenneth Turner's code
+
 mt_graph_vn <- toVisNetworkData(mention_graph)
 visNetwork(nodes = mt_graph_vn$nodes, edges = mt_graph_vn$edges,
            width = "100%", height = "800px") %>%
@@ -416,6 +418,4 @@ visNetwork(nodes = mt_graph_vn$nodes, edges = mt_graph_vn$edges,
   visEdges(arrows = "to") %>%
   visOptions(highlightNearest = TRUE)
 
-#library(rsconnect)
-#rsconnect::deployApp('~/tweet-conf/astro16.Rmd')
 ```
