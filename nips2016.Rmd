@@ -1,0 +1,415 @@
+---
+title: "Twitter analysis of NIPS2016"
+author: "Thomas E. Keller"
+date: "December 11, 2016"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = F, error = F, message = F)
+```
+
+# What's hoppin at NIPS2016?
+
+I would best self-describe as amateur-hour when it comes to things neural networks-y, so it's fun to read along about the cutting edge and see what is the next new thing. I didn't physically attend NIPS, and it's certainly not my primary field (I'm coming from my interest as an interest as a computational biologist). I'm not really going to try to pass judgement on any trends, mostly this analysis is to try to figure out  some new accounts to follow. With that caveat in mind, there are some I think popular tweets that somewhat set the tone hindsight.
+
+One tweet I particularly liked:
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">At a cafe in Barcelona airport -- customers around me are chatting about batch normalization in variational autoencoders. The end of NIPS.</p>&mdash; François Chollet (@fchollet) <a href="https://twitter.com/fchollet/status/807860000647430144">December 11, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+One attempt to sum up trends that seemed popular:
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">NIPS 2016 trends: learning-to-learn, GANification of X, Reinforcement learning for 3D navigation, RNNs, and Creating/Selling AI companies</p>&mdash; Tomasz Malisiewicz (@quantombone) <a href="https://twitter.com/quantombone/status/807712841230852096">December 10, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+We might be replaced by AI in time, but it will take time for them to think of the "sketch it out, copy shop is closed" strategy.
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Best poster at <a href="https://twitter.com/hashtag/nips2016?src=hash">#nips2016</a> about &#39;what to do when the copyshop is closed&#39; <a href="https://t.co/nc0KoHxDBX">pic.twitter.com/nc0KoHxDBX</a></p>&mdash; Markus Wulfmeier (@markus_with_k) <a href="https://twitter.com/markus_with_k/status/807686607771959296">December 10, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+I liked these slides that were shared (of course as a biologist), not that I really get them.
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Yoshua Bengio has made available his slides from <a href="https://twitter.com/hashtag/nips2016?src=hash">#nips2016</a> workshop - Towards biologically plausible deep learning <a href="https://t.co/1UB9zN1ZWm">https://t.co/1UB9zN1ZWm</a></p>&mdash; Jane Wang (@janexwang) <a href="https://twitter.com/janexwang/status/807593791293128704">December 10, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+And finally I thought this was interesting, also showing my bias since I'm partial to graphs of late.
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Interested in deep learning on graphs? Come by my poster on VAEs for graphs at the Bayesian Deep Learning w/s and say hi! <a href="https://twitter.com/hashtag/nips2016?src=hash">#nips2016</a> <a href="https://t.co/oQxfef45ws">pic.twitter.com/oQxfef45ws</a></p>&mdash; Thomas Kipf (@thomaskipf) <a href="https://twitter.com/thomaskipf/status/807506890532028416">December 10, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+Well, OK -- there was also that time that the robot dog showed up.
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">So <a href="https://twitter.com/BostonDynamics">@BostonDynamics</a> spot made an appearance at <a href="https://twitter.com/hashtag/nips2016?src=hash">#nips2016</a>!! <a href="https://t.co/wthSrtvwPF">pic.twitter.com/wthSrtvwPF</a></p>&mdash; Chris Burgess (@cpburgess_) <a href="https://twitter.com/cpburgess_/status/806505909946056704">December 7, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+OK, super last tweet- I did like this figure by Ben Hammer of Kaggle parsing the text of the NIPS 2016 papers, showing that MNIST continues to be the lingua franca, which is a bit of a surprise.
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Popular datasets referenced over time in NIPS papers. Surprisingly, MNIST reigns king <a href="https://twitter.com/hashtag/nips2016?src=hash">#nips2016</a> <a href="https://t.co/6rqCgSrcjl">https://t.co/6rqCgSrcjl</a> <a href="https://t.co/hxSGp4X80n">pic.twitter.com/hxSGp4X80n</a></p>&mdash; Ben Hamner (@benhamner) <a href="https://twitter.com/benhamner/status/805864969065689088">December 5, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+OK, super super last tweet- I just found this amusing (smart people are still human)
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">&quot;I have never gotten a model architecture right the first time&quot; --Andrew Ng. <a href="https://twitter.com/hashtag/nips2016?src=hash">#nips2016</a> <a href="https://t.co/3uh3ybG536">pic.twitter.com/3uh3ybG536</a></p>&mdash; Tomasz Malisiewicz (@quantombone) <a href="https://twitter.com/quantombone/status/805735424002027520">December 5, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+# Get tweets
+
+Here is code for how to download tweets if you are within the 7day twitter API search window. I've downloaded the tweets and saved them to an Rds so it doesn't need to be rerun (and lasts outside the narrow search window).
+
+
+
+```{r gettweets}
+library(shiny)
+library(twitteR)
+library(tidytext)
+library(ggplot2)
+library(wordcloud)
+library(dplyr)
+library(readr)
+
+#if you are going to use twitter search, set up twitter-secrets as an app
+#ie see these instructions from streamR
+#https://github.com/pablobarbera/streamR
+#load('twitter-secrets.Rdata')
+#setup_twitter_oauth(cons_key,cons_sec, acc_tok, acc_sec)
+
+#search along the hashtag (can be have multiple hashtags if you want/need)
+#convert to dataframe
+hashtag='#NIPS2016'
+confname=substr(hashtag,2,nchar(hashtag))
+#tw_list = searchTwitter("NIPS2016", n = 3e4, since = '2016-12-4')#~15k tweets
+#tw_df=twListToDF(tw_list)
+#tw_df=unique(tw_df)
+#filename<-paste0(confname,".csv")
+#write.csv(tw_df,file=filename,row.names=F)
+#tw_df=read_csv(filename)
+#saveRDS(tw_df,'NIPS2016.Rds')
+tw_df=readRDS('NIPS2016.Rds')
+tw_df$text= iconv(tw_df$text, to='UTF-8', sub = "byte")
+```
+
+
+
+# the hated wordcloud
+
+So, in terms of tweets, what were the most popular things people were talking about?
+
+We can look at this two ways, one that includes retweets, and one that only includes the original text.
+
+Both wordclouds prominently highly several of the more obvious trends in terms of conference chatter, gans (generative adversarial networks), reinforcement learning, and something bayesian (I have no idea what the context is).
+
+
+```{r wordclouds}
+users<-data.frame(word=tolower(tw_df$screenName),lexicon=rep('whatevs',nrow(tw_df)))
+#breaks down tweets into words for tidy (word) level analyses
+tidy_tw<-tw_df %>% unnest_tokens(word,text)
+
+
+#removes uninformatives words / ones that oversaturate wordcloud tidy_tw<-tw_df %>% filter(!isRetweet)
+tw_stop<-data.frame(word=c(confname,tolower(confname),'','nips2016','htt','25','http','amp','gt','t.c','rt','https','t.co','___','1','2','3','4','5','6','7','8','9',"i\'m",'15','30','45','00','10'),lexicon='whatevs')
+data("stop_words")
+tidy_cloud <- tidy_tw %>%
+ anti_join(tw_stop) %>%
+  anti_join(stop_words) %>%
+  anti_join(users)
+
+print(tidy_cloud %>% count(word, sort = TRUE)) 
+
+filename<-paste0(confname,"_wordcloud.png")
+#png(filename, width=12, height=8, units="in", res=300)
+tidy_cloud %>%
+ count(word) %>%
+ with(wordcloud(word, n,max.words = 100,colors=brewer.pal(8,'Dark2'),random.order=FALSE))
+#dev.off()
+
+
+tidy_tw<-tw_df %>% filter(!isRetweet) %>% unnest_tokens(word,text)
+
+
+#removes uninformatives words / ones that oversaturate wordcloud
+tw_stop<-data.frame(word=c(confname,tolower(confname),'','nips2016','htt','25','http','amp','gt','t.c','rt','https','t.co','___','1','2','3','4','5','6','7','8','9',"i\'m",'15','30','45','00','10'),lexicon='whatevs')
+data("stop_words")
+tidy_cloud <- tidy_tw %>%
+ anti_join(tw_stop) %>%
+  anti_join(stop_words) %>%
+  anti_join(users)
+
+print(tidy_cloud %>% count(word, sort = TRUE)) 
+
+filename<-paste0(confname,"_wordcloud.png")
+#png(filename, width=12, height=8, units="in", res=300)
+tidy_cloud %>%
+ count(word) %>%
+ with(wordcloud(word, n,max.words = 100,colors=brewer.pal(8,'Dark2'),random.order=FALSE))
+
+
+```
+
+
+
+# Descriptive figures of twitter usage
+
+Much of this analysis follows along the really nice code by Kenneth Turner looking at the (now not so) recent microbial conference ISME https://khturner.shinya pps.io/HashtagISME16/
+
+
+```{r fig.width=12}
+library(ggplot2)
+library(RColorBrewer)
+tweets_conf <- tw_df %>%
+  filter(created >= "2016-12-5" & created <= "2016-12-10") # Let's ignore pre/post tweets for now
+tweets_conf %>%
+  ggplot(aes(created, fill = isRetweet)) + geom_histogram(bins = 100) + 
+  scale_x_datetime(date_breaks = "6 hours", date_labels = "%a %d %H:%M") +
+  theme_minimal() + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  scale_fill_brewer(type = "qual", palette = "Set1")
+```
+
+# ~influential accounts~
+
+Make a list of the top accounts that were active over the main conference days. Return a table of some statistics like favorites, retweets, and number of tweets.
+
+There were 907 unique accounts tweeting, but most made only a few comments (72% made only 1 or 2 tweets)
+
+```{r tab-tweeters}
+orig_tweets <- tweets_conf %>% filter(!isRetweet) # Only original tweets
+tweeter_summary <- orig_tweets %>%
+  group_by(screenName) %>% # For each screenname, summarize several counts
+  summarize(numTweets = n(), numFavorites = sum(favoriteCount),
+            numRetweets = sum(retweetCount)) %>% arrange(-numTweets)
+renderDataTable(tweeter_summary)
+
+# fraction of accounts making only a couple or fewer tweets
+print(sum(tweeter_summary$numTweets<=2)/nrow(tweeter_summary))
+
+
+```
+
+This is a simple overview of the most top 40 most frequent tweeters, in terms of number of original tweets during the main conference days.
+
+```{r tweeter_sum}
+tweeter_summary %>% slice(1:40) %>%
+  transform(screenName = reorder(screenName, numTweets)) %>% 
+  ggplot(aes(screenName, numTweets))+ geom_bar(stat = "identity") + 
+  coord_flip() +
+  theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Here, if we try to quantify the "impact" or "influence" (~virality~) per tweet, we can also see another way of identifyng important people in the conference network. I'm dubious about these dubious but here we are anyway.
+
+```{r}
+library(viridis)
+tweeter_summary %>% mutate(impact = numFavorites + numRetweets) %>%
+  arrange(-impact) %>% slice(1:40) %>% #decreasing impact (most impactful first)
+  transform(screenName = reorder(screenName, impact)) %>%
+  ggplot(aes(screenName, impact, fill = impact / numTweets)) +
+  geom_bar(stat = "identity") +
+  coord_flip()+ ylab('Impact (numFavorites + numRetweets)') +
+  theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  scale_fill_viridis(trans = "log", breaks = c(1, 5, 10, 50))
+```
+
+As we can see, impact is not purely a function of twitter activity, some large accounts, and ones tied to universities/well-known organisitions instead of individuals tend to have larger impact and fewer individual tweets.
+
+
+# Twitter sentiment
+
+One analysis I enjoy, even if it's a bit rubbish ( i.e. the implementation is quick and dirty take it with a huge grain of salt), is something called a [sentiment analysis](https://en.wikipedia.org/wiki/Sentiment_analysis). The basic idea is to count up the words in a single tweet with positive or negative emotion (love,hate, great, sad) and then use that to score the tweet.
+
+```{r sentiment}
+library(tidyr)
+bing <- sentiments %>%
+ filter(lexicon == "bing") %>%
+ select(-score)
+
+tidy_tw<-tw_df %>% unnest_tokens(word,text)
+conf_sent <- tidy_tw %>%
+ inner_join(bing) %>%
+ count(id, sentiment) %>% 
+ spread(sentiment, n, fill = 0) %>%
+ mutate(sentiment = positive - negative) %>%
+ inner_join(tw_df[,c(5,8)]) #join on id and created
+
+library(cowplot)
+library(scales)
+library(lubridate)
+
+#adjust time zone of tweets with lubridate
+conf_sent$created<-ymd_hms(conf_sent$created,tz='EST')
+
+#Example could include label, but don't have time to figure out what is driving
+#inflection points of moods during these other conferences
+df_labels<-data.frame(times=strptime(c("2016-07-13 12:00:00","2016-07-15 0:00:00","2016-07-16 16:30:00","2016-07-18 6:30:00"),"%Y-%m-%d %H:%M:%S"),
+                      labels=c("it begins!\nmixers for all","science cafe\nfunny-man",'final day\nmixer stuff','that was pretty\ngood reflection'),
+                      y=c(1.5,1.0,1.0,1.0))
+ggplot(conf_sent, aes(created, sentiment)) +
+ geom_smooth() + xlab("tweet time") + ylab("tweet sentiment")+
+ scale_x_datetime(breaks = date_breaks("day")) + background_grid(major = "xy", minor = "none") +
+ theme(axis.text.x=element_text(angle=315,vjust=.6))+
+  #geom_text(data=df_labels,aes(x=times,y=y,label=labels),size=4)+
+  ggtitle(paste(hashtag,"positive or negative emotions (think first order ~vibe of conf.)"))
+
+```
+
+# RT network
+
+We'll begin with a retweet network, and later compare it with the mention network ala Keith Turner constructed for ISME. I think it's worth it to see what the differences in composition are? 
+
+Update: mentions are much more sparse than retweets (partially(?) due to the fact that quote tweets are not captured by this method, but probably not that huge a discrepancy).
+
+56 distinct communities, journal accounts tend to have their own clusters (due to people outside the conference retweeting specific news of the singular account they follow, see all the fans around the different colored larger hubs, often news/journal aggregators/hospitals etc). 
+
+Each color corresponds to a different cluster in the network, and were detected using [cluster_walktrap in igraph](http://igraph.org/r/doc/cluster_walktrap.html), which is a stochastic algorithm to detect clusters using short random walks.
+
+I'm not visualizing the full retweet network, there were just too many people and it makes it really slow on my computer. I'm keeping accounts that had at least 5 retweets, you can mess around with it as you see fit.
+
+These networks are drawn in javascript, so you can do dumb things like zoom in and out. They are really dense networks still, so it might be hard to find yourself in the network. If you do, you can click on the node to isolate the subnetwork it connects to.
+```{r rt-net}
+#need to cull retweet network down, can't plot the whole dang thing
+top_tweeters=filter(tweeter_summary,numRetweets>=5) #261
+rt_df= tweets_conf %>% filter(isRetweet,screenName %in% top_tweeters$screenName)
+
+# can use to select and subset by the accounts with more retweets (ie more central accounts)
+#decided against filtering for now
+
+#rt_users=data.frame(screenName = unlist(rt_df$screenName)) %>% tbl_df %>% 
+# group_by(screenName) %>%
+# tally %>% arrange(-n) %>% slice(1:50) %>%
+#  transform(screenName = reorder(screenName, n))
+
+retweets = regmatches(rt_df$text,
+                      gregexpr("@[-_A-Za-z0-9]+",rt_df$text))
+retweeted=sapply(retweets,function(x) substr(x[1],2,nchar(x[1])))
+edges = data.frame(from=rt_df$screenName,to=retweeted,stringsAsFactors = F)  %>% group_by(from,to) %>% summarize(value = n())
+
+# Build a df for nodes
+nodes <- data.frame(id = unique(c(edges$from, edges$to)),
+                    label = unique(c(edges$from, edges$to)),
+                    stringsAsFactors = F) %>% tbl_df
+
+library(igraph)
+rt_graph <- make_empty_graph() + vertices(nodes$id) +
+  edges(as.vector(rbind(edges$from, edges$to)), weight = edges$value)
+
+V(rt_graph)$value <- page_rank(rt_graph, weights = E(rt_graph)$value)[[1]] # - 0.0013 ? scale? 
+
+# detect communities / clusters
+cw <- cluster_walktrap(rt_graph)
+cw
+V(rt_graph)$group = membership(cw)
+# can erase with NULL if things go awry (I think)
+
+# look into ForceAtlas2 for visualising network
+
+#make a nice df with statistics on degree, cluster, etc.
+
+rt_outdf=data.frame(screenName=names(V(rt_graph)),
+                    page_rank=page_rank(rt_graph,weights=E(rt_graph)$value)[[1]],
+                    cluster=as.vector(membership(cw)),
+                    in_degree=degree(rt_graph,mode='in'),out_degree=degree(rt_graph,mode='out'),row.names=NULL)
+
+clust_size=sizes(cw)
+filt_i=which(clust_size<2)
+rt_outdf2=filter(rt_outdf,!(cluster %in% filt_i))
+
+rt_sum=rt_outdf2 %>% group_by(cluster) %>% summarise(max_in_degree=max(in_degree),screenName=first(screenName,order_by=-in_degree))
+
+#write.csv(rt_outdf,file='nips16_inout_degree.csv',quote=F,row.names=F)
+#write.csv(rt_sum,file='nips16_cluster_hub_screenname.csv',quote=F,row.names=F)
+```
+
+Now to visualize the network
+
+```{r rt_viz}
+library(visNetwork)
+V(rt_graph)$value <- page_rank(rt_graph, weights = E(rt_graph)$value)[[1]]  - 0.0015 #? scale? 
+
+#IDK basically anything about this package yet, so again straight from Kenneth Turner's code
+rt_graph_vn <- toVisNetworkData(rt_graph)
+visNetwork(nodes = rt_graph_vn$nodes, edges = rt_graph_vn$edges,
+           width = "100%", height = "800px") %>%
+  visIgraphLayout(physics = T, smooth = T) %>%
+  visEdges(arrows = "to") %>%
+  visOptions(highlightNearest = TRUE) %>%
+  visPhysics(solver = "forceAtlas2Based", forceAtlas2Based = list(gravitationalConstant = -10))
+
+```
+
+# mentions and mention network
+
+First we'll grab mentions (this is straight up Keith Turner code, I've never really looked at mentions before). It's a different dynamic from retweets, but obviously also important because that's when conversations are actually happening.
+
+You notice that even with the pruned retweet network, that network is denser than the full mention network. Basically, mentions take more effort than retweets, which are really a form of passing along information. The shape also almost certainly differs in other important aspects, but I haven't gone into measuing that right now.
+
+BostonDynamics were much talked about once their robot came out of nowhere.
+
+```{r mentions}
+mentions = regmatches(orig_tweets$text,
+                       gregexpr("@[-_A-Za-z0-9]+",
+                                orig_tweets$text))
+mentions <- lapply(mentions, function(x) gsub("@", "", x)) # Strip off @
+names(mentions) <- orig_tweets$screenName
+# Filter out non-mentioning tweets
+mentions <- mentions[lapply(mentions, length) > 0]
+
+data.frame(screenName = unlist(mentions)) %>% tbl_df %>% 
+ group_by(screenName) %>%
+ tally %>% arrange(-n) %>% slice(1:40) %>%
+  transform(screenName = reorder(screenName, n)) %>% # gets out of tibble (not needed?)
+  ggplot(aes(screenName, n)) + geom_bar(stat = "identity") +
+  coord_flip() + ylab('Number of Mentions')+
+  theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+
+# Extract mentions as a vector of "from", "to", "from", "to"...
+edge_sequence <- lapply(seq_along(mentions), function(i) {
+  as.vector(rbind(rep(names(mentions)[[i]], length(mentions[[i]])),
+                  mentions[[i]]))
+  }) %>% unlist
+
+# Summarize from, to and number of mentions in a df
+edges <- data.frame(from = edge_sequence[seq(1, length(edge_sequence), 2)],
+                    to = edge_sequence[seq(2, length(edge_sequence), 2)],
+                    stringsAsFactors = F) %>% tbl_df %>%
+  group_by(from, to) %>% summarize(value = n())
+
+# Build a df for nodes
+nodes <- data.frame(id = unique(c(edges$from, edges$to)),
+                    label = unique(c(edges$from, edges$to)),
+                    stringsAsFactors = F) %>% tbl_df
+
+# Construct an igraph object of our mention graph
+library(igraph)
+mention_graph <- make_empty_graph() + vertices(nodes$id) +
+  edges(as.vector(rbind(edges$from, edges$to)), value = edges$value)
+
+```
+
+# Mention graph
+
+colors are clusters, weirdly enough mention is sparse enough to actually work ok. Retweet is way too dense. Actually, on second thought, mention being sparse is not weird, as that involves being part of a conversation & more typing. Retweets are literally a button press.
+
+So anyway, that could have saved me some time if I had seen it in a pub before seeing it firsthand.
+
+```{r viz-mention}
+V(mention_graph)$value <- page_rank(mention_graph, weights = E(mention_graph)$value)[[1]] # - 0.0013 ? scale? 
+
+# detect communities / clusters
+cw <- cluster_walktrap(mention_graph)
+cw
+V(mention_graph)$group = membership(cw)
+
+#IDK basically anything about this package yet, so again straight from Kenneth Turner's code
+mt_graph_vn <- toVisNetworkData(mention_graph)
+visNetwork(nodes = mt_graph_vn$nodes, edges = mt_graph_vn$edges,
+           width = "100%", height = "800px") %>%
+  visIgraphLayout(physics = T, smooth = T) %>%
+  visEdges(arrows = "to") %>%
+  visOptions(highlightNearest = TRUE)
+
+#library(rsconnect)
+#rsconnect::deployApp('~/tweet-conf/astro16.Rmd')
+```
