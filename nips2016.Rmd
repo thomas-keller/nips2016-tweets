@@ -138,8 +138,7 @@ tidy_cloud <- tidy_tw %>%
 
 print(tidy_cloud %>% count(word, sort = TRUE)) 
 
-filename<-paste0(confname,"_wordcloud.png")
-#png(filename, width=12, height=8, units="in", res=300)
+
 tidy_cloud %>%
  count(word) %>%
  with(wordcloud(word, n,max.words = 100,colors=brewer.pal(8,'Dark2'),random.order=FALSE))
@@ -170,7 +169,7 @@ tweets_conf %>%
 
 Make a list of the top accounts that were active over the main conference days. Return a table of some statistics like favorites, retweets, and number of tweets.
 
-There were 907 unique accounts tweeting, but most made only a few comments (72% made only 1 or 2 tweets)
+There were 907 unique accounts tweeting, but most made only a few comments (72% made only 1 or 2 tweets with the hashtag).
 
 ```{r tab-tweeters}
 orig_tweets <- tweets_conf %>% filter(!isRetweet) # Only original tweets
@@ -186,7 +185,7 @@ print(sum(tweeter_summary$numTweets<=2)/nrow(tweeter_summary))
 
 ```
 
-This is a simple overview of the most top 40 most frequent tweeters, in terms of number of original tweets during the main conference days.
+This is a simple overview of the 40 most frequent tweeters, in terms of number of original tweets during the main conference days.
 
 ```{r tweeter_sum}
 tweeter_summary %>% slice(1:40) %>%
@@ -217,6 +216,10 @@ As we can see, impact is not purely a function of twitter activity, some large a
 
 One analysis I enjoy, even if it's a bit rubbish ( i.e. the implementation is quick and dirty take it with a huge grain of salt), is something called a [sentiment analysis](https://en.wikipedia.org/wiki/Sentiment_analysis). The basic idea is to count up the words in a single tweet with positive or negative emotion (love,hate, great, sad) and then use that to score the tweet.
 
+You can see that things were generally pretty positive until the last day of the conference, then tearful fairwells were said (~12-09). Not entirely sure what the cause of this is without looking more closely at the tweets, and again I wasn't actually at the conference so I'm not sure what was happening to know if there was anything specific it could be tied to. 
+
+And then sentiment picks up on the last ~day.
+
 ```{r sentiment}
 library(tidyr)
 bing <- sentiments %>%
@@ -236,7 +239,8 @@ library(scales)
 library(lubridate)
 
 #adjust time zone of tweets with lubridate
-conf_sent$created<-ymd_hms(conf_sent$created,tz='EST')
+
+conf_sent$created<-ymd_hms(conf_sent$created,tz='CET') #IMPORTANT!!! CONFERENCE WAS IN BARCELONA 6 hours off from EST, here
 
 #Example could include label, but don't have time to figure out what is driving
 #inflection points of moods during these other conferences
